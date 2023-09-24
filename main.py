@@ -6,25 +6,23 @@ from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
 
 from kivy.core.image import Image
-from src.config import width, hieght
+from config import width, hieght
 class MyApp(App):
     def build(self):
         layout = BoxLayout(orientation='vertical')
         
         with layout.canvas.before:
-            # Задний фон
             bg = Image('bg.png').texture
             self.rect = Rectangle(texture=bg, size=(width, hieght), pos=layout.pos)
         
-        prompt_input = TextInput(hint_text='Введите промпт', size_hint=(None, None), size=(400, 50), multiline=False, pos_hint={'center_x': 0.5})
-        layout.add_widget(prompt_input)
-        
-        send_button = Button(text='Отправить промпт', size_hint=(None, None), size=(200, 50), disabled=True, pos_hint={'center_x': 0.5})
+        self.prompt_input = TextInput(hint_text='Введите промпт', size_hint=(None, None), size=(400, 50), multiline=False, pos_hint={'center_x': 0.5})
+        layout.add_widget(self.prompt_input)
+        send_button = Button(text='Отправить промпт', size_hint=(None, None), size=(200, 50), disabled=False, pos_hint={'center_x': 0.5})
         send_button.bind(on_release=self.send_prompt)
         layout.add_widget(send_button)
         
         help_button = Button(text='?', size_hint=(None, None), size=(50, 50), pos_hint={'right': 1, 'top': 1})
-        help_button.background_color = (0.8, 0.2, 0.2, 1)  # Цвет кнопки помощи
+        help_button.background_color = (0.8, 0.2, 0.2, 1) 
         help_button.bind(on_release=self.show_help_text)
         layout.add_widget(help_button)
         
@@ -33,12 +31,13 @@ class MyApp(App):
         
         return layout
     
-    def send_prompt(self, instance):
-        # Логика отправки промпта на сервер
+    def send_prompt(self, instance):  # TODO create a function to send prompt to server
+        print('Промпт отправлен. Спасибо!. Промпт:', self.prompt_input.text)
+        self.prompt_input.text = ""
         pass
     
     def show_help_text(self, instance):
-        from src.config import help_text
+        from config import help_text
         self.help_label.text = help_text
     
     def on_layout(self, instance, value):
