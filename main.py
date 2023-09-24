@@ -4,7 +4,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
-
+import time
 from kivy.core.image import Image
 from config import width, hieght
 class MyApp(App):
@@ -29,11 +29,22 @@ class MyApp(App):
         self.help_label = Label(text='', size_hint=(None, None), size=(400, 200), pos_hint={'right': 1, 'top': 0.9})
         layout.add_widget(self.help_label)
         
+        self.notif = Label(text='', size_hint=(None, None), size=(400, 200))
+        layout.add_widget(self.notif)
+        
         return layout
     
     def send_prompt(self, instance):  # TODO create a function to send prompt to server
         print('Промпт отправлен. Спасибо!. Промпт:', self.prompt_input.text)
+        promt = self.prompt_input.text
         self.prompt_input.text = ""
+        self._send_to_server(promt)
+        time.sleep(5)
+        self.notif.text = "Получен ответ от сервера, начинаю рисовать..."
+
+        pass
+
+    def _send_to_server(self, promt):
         pass
     
     def show_help_text(self, instance):
